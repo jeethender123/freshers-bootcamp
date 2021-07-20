@@ -15,9 +15,6 @@ func (mat Matrix) initialize()  Matrix{
 	//fmt.Println(mat)
 
 	rows := make([]int, mat.col)
-	for index,_ := range rows{
-		rows[index]=0
-	}
 
 	for index, _ := range mat.elements {
 		mat.elements[index]= make([]int, len(rows))
