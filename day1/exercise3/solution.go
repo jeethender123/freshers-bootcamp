@@ -1,35 +1,47 @@
+//package exercise3
+
 package main
 
+import (
+	"fmt"
+)
 
-import "fmt"
-
-type getSalary interface{
-	FullTimeEmp() int
-	Contractor() int
-	Freelancer() int
-}
-type Employees struct{
-	FullTime_days, Contractor_days, Freelancer_hours int
-}
-func (e Employees) FullTimeEmp() int {
-	return e.FullTime_days*500
-}
-func (e Employees) Contractor() int {
-	return e.Contractor_days*100
-}
-func (e Employees) Freelancer() int {
-	return e.Freelancer_hours*10
+type Salary interface {
+	compute_salary() int
 }
 
-func main(){
-	var employee getSalary
-	var workingdays_Ft,workingdays_cont,workinghours_free int
-	fmt.Println("enter values:\n")
-	fmt.Scanf("%d",&workingdays_Ft)
-	fmt.Scanf("%d",&workingdays_cont)
-	fmt.Scanf("%d",&workinghours_free)
-	employee = Employees{workingdays_Ft,workingdays_cont,workinghours_free}
-	fmt.Println("FT employee salary: ", employee.FullTimeEmp())
-	fmt.Println("Contractor salary: ", employee.Contractor())
-	fmt.Println("Freelancer Salary: ",employee.Freelancer())
+type fullTime struct {
+	duration int
 }
+
+type contractor struct {
+	duration int
+}
+
+type freelancer struct {
+	duration int
+}
+
+
+func (employee fullTime) compute_salary() int {
+	return employee.duration*500
+}
+
+func (employee contractor) compute_salary() int {
+	return employee.duration*100
+}
+
+func (employee freelancer) compute_salary() int {
+	return employee.duration*10
+}
+
+
+func main() {
+	fte:=fullTime{30}
+	cont:=contractor{20}
+	fl:=freelancer{250}
+	fmt.Println(fte.compute_salary())
+	fmt.Println(cont.compute_salary())
+	fmt.Println(fl.compute_salary())
+}
+
