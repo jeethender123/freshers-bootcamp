@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type Matrix struct {
 	row,col int
@@ -27,6 +30,7 @@ func add(m Matrix, n Matrix)  {
 			}
 		}
 		fmt.Println(final)
+		fmt.Println(json.Marshal(final))
 	} else {
 		fmt.Println("Matrices cannot be added")
 	}
