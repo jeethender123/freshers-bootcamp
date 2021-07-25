@@ -25,40 +25,40 @@ func main(){
 
 
 	for i:=0;i<num_of_strings ;i++{
-		var d string
-		fmt.Scanf("%s",&d)
-		set_of_strings[i]= d
+		var temp_string string
+		fmt.Scanf("%s",&temp_string)
+		set_of_strings[i]= temp_string
 	}
 
-	freqs := make(chan (FreqMap))
-	result := make(chan (FreqMap))
+	freq_channel := make(chan (FreqMap))
+	result_channel := make(chan (FreqMap))
 
 
 	go func() {
 		freq := make(FreqMap)
 		//  range will stop when freqs is closed
-		for r := range freqs {
-			for k, v := range r {
-				freq[k] += v
+		for temp_freq_channel := range freq_channel {
+			for index, temp_freq := range temp_freq_channel {
+				freq[index] += temp_freq
 			}
 		}
-		result <- freq
-		close(result)
+		result_channel <- freq
+		close(result_channel)
 	}()
 
 	var wg sync.WaitGroup
 	wg.Add(num_of_strings)
-	for _, s := range set_of_strings {
-		go func(ss string) {
-			freqs <- Frequency(ss)
+	for _, strings := range set_of_strings {
+		go func(temp_string string) {
+			freq_channel <- Frequency(temp_string)
 			wg.Done()
-		}(s)
+		}(strings)
 	}
 	wg.Wait()
 	// close the channel once all the goroutines are done
-	close(freqs)
+	close(freq_channel)
 	var map1 =FreqMap{}
-	map1 = <- result
+	map1 = <-result_channel
 	for k,v := range map1{
 		fmt.Printf("%s : %d \n",string(k),v)
 
